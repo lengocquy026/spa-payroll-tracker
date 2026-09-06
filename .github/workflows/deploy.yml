@@ -18,7 +18,11 @@ jobs:
         with: { node-version: 20, cache: npm }
       - run: npm install
       - name: Validate API configuration
-        run: test -n "$VITE_API_URL" || (echo "Missing GitHub Actions variable VITE_API_URL" && exit 1)
+        run: |
+          case "$VITE_API_URL" in
+            http://*|https://*) ;;
+            *) echo "VITE_API_URL must start with http:// or https://"; exit 1 ;;
+          esac
         env:
           VITE_API_URL: ${{ vars.VITE_API_URL }}
       - name: Build frontend

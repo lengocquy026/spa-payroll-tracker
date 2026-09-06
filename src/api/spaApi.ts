@@ -1,9 +1,12 @@
 import type { Counts, Employee, Service, Summary, WorkRecord } from '../types'
 
 const configuredApiUrl = import.meta.env.VITE_API_URL?.trim()
+const defaultProductionApiUrl = 'https://spa-payroll-tracker.onrender.com'
+const isValidApiUrl = (value: string | undefined) =>
+  Boolean(value && /^https?:\/\/[^\s/]+/.test(value))
 const API_BASE_URL = (
-  configuredApiUrl ||
-  (import.meta.env.PROD ? 'https://spa-payroll-tracker.onrender.com' : '')
+  (isValidApiUrl(configuredApiUrl) ? configuredApiUrl : undefined) ||
+  (import.meta.env.PROD ? defaultProductionApiUrl : '')
 ).replace(/\/+$/, '')
 
 async function request<T>(url: string, options?: RequestInit): Promise<T> {
