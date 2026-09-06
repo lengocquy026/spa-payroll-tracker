@@ -31,6 +31,8 @@ SQLite được lưu tại `data/spa.sqlite`. API chạy ở `http://localhost:3
 
 Khi frontend chạy khác domain với backend, tạo biến môi trường `VITE_API_URL`, ví dụ `VITE_API_URL=https://api.example.com`. Vite sẽ dùng biến này cho toàn bộ API và xuất Excel.
 
+Kiểm tra backend sau khi deploy bằng `https://TEN_BACKEND.onrender.com/api/health`; kết quả đúng là `{ "status": "ok" }`. `VITE_API_URL` chỉ chứa origin backend, không thêm `/api` ở cuối.
+
 ## Chức năng
 
 - Lưu bảng công và chi tiết dịch vụ vào SQLite.

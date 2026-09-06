@@ -21,6 +21,10 @@ jobs:
         run: npm run build
         env:
           VITE_API_URL: ${{ vars.VITE_API_URL }}
+      - name: Validate API configuration
+        run: test -n "$VITE_API_URL" || (echo "Missing GitHub Actions variable VITE_API_URL" && exit 1)
+        env:
+          VITE_API_URL: ${{ vars.VITE_API_URL }}
       - uses: actions/upload-pages-artifact@v3
         with: { path: dist }
   deploy:

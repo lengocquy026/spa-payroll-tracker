@@ -102,6 +102,8 @@ db.exec(
   'INSERT OR IGNORE INTO employee_service_prices (employee_id, service_id, price) SELECT e.id, s.id, s.price FROM employees e CROSS JOIN services s',
 )
 app.use(express.json())
+app.get('/', (_req, res) => res.json({ name: 'Babylon Spa API', status: 'ok' }))
+app.get('/api/health', (_req, res) => res.json({ status: 'ok' }))
 
 app.get('/api/employees', (_req, res) =>
   res.json(

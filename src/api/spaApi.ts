@@ -1,6 +1,6 @@
 import type { Counts, Employee, Service, Summary, WorkRecord } from '../types'
 
-const API_BASE_URL = import.meta.env.VITE_API_URL ?? ''
+const API_BASE_URL = (import.meta.env.VITE_API_URL ?? '').replace(/\/+$/, '')
 
 async function request<T>(url: string, options?: RequestInit): Promise<T> {
   const response = await fetch(`${API_BASE_URL}${url}`, {
