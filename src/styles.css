@@ -1,6 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
 :root {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
   color: #173f3c;
   background: #f6f7f2;
 }
@@ -35,7 +34,7 @@ button {
 }
 .brand {
   font:
-    24px 'Playfair Display',
+    24px Georgia,
     serif;
   color: white;
   padding: 0 14px 50px;
@@ -52,7 +51,7 @@ button {
 .table-head,
 .stat-card small {
   font:
-    10px 'DM Mono',
+    10px 'SFMono-Regular', Consolas,
     monospace;
   letter-spacing: 0.09em;
 }
@@ -137,7 +136,7 @@ p {
 }
 .topbar h1 {
   font:
-    700 27px 'Playfair Display',
+    700 27px Georgia,
     serif;
   margin-top: 7px;
 }
@@ -177,7 +176,7 @@ p {
 }
 .hero h2 {
   font:
-    700 27px 'Playfair Display',
+    700 27px Georgia,
     serif;
 }
 .hero h2 span {
@@ -241,7 +240,7 @@ p {
 .stat-card strong {
   display: block;
   font:
-    700 27px 'Playfair Display',
+    700 27px Georgia,
     serif;
   color: #173f3c;
   margin: 17px 0 8px;
@@ -264,7 +263,7 @@ p {
 .section-heading h3,
 .page-heading h2 {
   font:
-    700 22px 'Playfair Display',
+    700 22px Georgia,
     serif;
 }
 .table-card,
@@ -395,7 +394,7 @@ p {
 }
 .card-title h3 {
   font:
-    700 21px 'Playfair Display',
+    700 21px Georgia,
     serif;
 }
 .date-pill {
@@ -403,7 +402,7 @@ p {
   color: #59816d;
   border-radius: 20px;
   padding: 7px 11px;
-  font: 11px 'DM Mono';
+  font: 11px 'SFMono-Regular', Consolas, monospace;
 }
 .service-list {
   border-top: 1px solid #edf1ed;
@@ -586,7 +585,7 @@ p {
   box-shadow: 0 20px 50px #173f3c33;
 }
 .confirm-modal h3 {
-  font: 700 21px 'Playfair Display', serif;
+  font: 700 21px Georgia, serif;
   margin-bottom: 10px;
 }
 .modal-copy {
