@@ -34,11 +34,11 @@ db.exec(`
   CREATE TABLE IF NOT EXISTS work_record_items (id INTEGER PRIMARY KEY AUTOINCREMENT, work_record_id INTEGER NOT NULL, service_id INTEGER NOT NULL, quantity INTEGER NOT NULL DEFAULT 0, unit_price INTEGER NOT NULL DEFAULT 0, UNIQUE(work_record_id, service_id), FOREIGN KEY(work_record_id) REFERENCES work_records(id) ON DELETE CASCADE, FOREIGN KEY(service_id) REFERENCES services(id));
 `)
 app.use((req, res, next) => {
-  const allowedOrigins = (
-    process.env.FRONTEND_URL ??
-    'https://kinchan026.github.io,http://localhost:5173'
-  )
-    .split(',')
+  const allowedOrigins = [
+    'https://kinchan026.github.io',
+    'http://localhost:5173',
+    ...(process.env.FRONTEND_URL ?? '').split(','),
+  ]
     .map((origin) => origin.trim().replace(/\/+$/, ''))
     .filter(Boolean)
   const requestOrigin = String(req.headers.origin ?? '').replace(/\/+$/, '')

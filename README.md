@@ -18,7 +18,7 @@ ADMIN_PASSWORD='mat-khau-cua-ban' npm run server
 Khi backend chạy khác domain frontend, đặt thêm CORS và thư mục SQLite persistent:
 
 ```bash
-FRONTEND_URL='https://TEN_GITHUB.github.io' DATA_DIR='/data' npm run server
+FRONTEND_URL='https://kinchan026.github.io' DATA_DIR='/data' npm run server
 ```
 
 Trên Render, tạo `Persistent Disk` và mount vào đúng `/data`, sau đó đặt Environment Variable `DATA_DIR=/data`. Không dùng `/var/data` nếu chưa mount disk ở đường dẫn đó. Nếu không có Persistent Disk, app vẫn chạy bằng thư mục local nhưng dữ liệu SQLite có thể mất khi service redeploy/restart.
