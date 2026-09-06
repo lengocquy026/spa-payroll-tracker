@@ -29,7 +29,7 @@ npm run dev
 
 SQLite được lưu tại `data/spa.sqlite`. API chạy ở `http://localhost:3001`, frontend ở địa chỉ Vite hiển thị trong terminal.
 
-Khi frontend chạy khác domain với backend, tạo biến môi trường `VITE_API_URL`, ví dụ `VITE_API_URL=https://api.example.com`. Vite sẽ dùng biến này cho toàn bộ API và xuất Excel.
+Khi frontend chạy khác domain với backend, tạo biến môi trường `VITE_API_URL`, ví dụ `VITE_API_URL=https://api.example.com`. Vite sẽ dùng biến này cho toàn bộ API và xuất Excel. Bản production có fallback tới `https://spa-payroll-tracker.onrender.com`; local vẫn dùng Vite proxy.
 
 Kiểm tra backend sau khi deploy bằng `https://TEN_BACKEND.onrender.com/api/health`; kết quả đúng là `{ "status": "ok" }`. `VITE_API_URL` chỉ chứa origin backend, không thêm `/api` ở cuối.
 

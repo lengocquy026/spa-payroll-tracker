@@ -1,6 +1,10 @@
 import type { Counts, Employee, Service, Summary, WorkRecord } from '../types'
 
-const API_BASE_URL = (import.meta.env.VITE_API_URL ?? '').replace(/\/+$/, '')
+const configuredApiUrl = import.meta.env.VITE_API_URL?.trim()
+const API_BASE_URL = (
+  configuredApiUrl ||
+  (import.meta.env.PROD ? 'https://spa-payroll-tracker.onrender.com' : '')
+).replace(/\/+$/, '')
 
 async function request<T>(url: string, options?: RequestInit): Promise<T> {
   const response = await fetch(`${API_BASE_URL}${url}`, {
