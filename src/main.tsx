@@ -97,20 +97,24 @@ function App() {
       flash('Không thể lưu bảng giá')
     }
   }
-  const updateEmployee = async (id: number, name: string) => {
+  const updateEmployee = async (
+    id: number,
+    name: string,
+    adminPassword: string,
+  ) => {
     try {
-      await spaApi.updateEmployee(id, name)
-      await reloadEmployees()
+      await spaApi.updateEmployee(id, name, adminPassword)
+      await Promise.all([reloadEmployees(), reloadSummary()])
       flash('Đã cập nhật nhân viên')
     } catch {
       flash('Không thể cập nhật nhân viên')
       throw new Error('update employee failed')
     }
   }
-  const createEmployee = async (name: string) => {
+  const createEmployee = async (name: string, adminPassword: string) => {
     try {
-      await spaApi.createEmployee(name)
-      await reloadEmployees()
+      await spaApi.createEmployee(name, adminPassword)
+      await Promise.all([reloadEmployees(), reloadSummary()])
       flash('Đã tạo nhân viên mới')
     } catch {
       flash('Không thể tạo nhân viên')
@@ -120,7 +124,7 @@ function App() {
   const deleteEmployee = async (id: number, password: string) => {
     try {
       await spaApi.deleteEmployee(id, password)
-      await reloadEmployees()
+      await Promise.all([reloadEmployees(), reloadSummary()])
       if (pricingEmployeeId === id) setPricingEmployeeId(null)
       flash('Đã xóa nhân viên')
     } catch {

@@ -133,6 +133,9 @@ app.get('/api/employees', (_req, res) =>
 )
 app.post('/api/employees', (req, res) => {
   const name = String(req.body?.name ?? '').trim()
+  const password = String(req.body?.adminPassword ?? '')
+  if (password !== adminPassword)
+    return res.status(403).json({ error: 'Mật khẩu admin không đúng' })
   if (!name)
     return res.status(400).json({ error: 'Tên nhân viên không hợp lệ' })
   const create = db.transaction(() => {
@@ -151,6 +154,9 @@ app.post('/api/employees', (req, res) => {
 app.put('/api/employees/:id', (req, res) => {
   const employeeId = Number(req.params.id)
   const name = String(req.body?.name ?? '').trim()
+  const password = String(req.body?.adminPassword ?? '')
+  if (password !== adminPassword)
+    return res.status(403).json({ error: 'Mật khẩu admin không đúng' })
   if (!employeeId || !name)
     return res.status(400).json({ error: 'Tên nhân viên không hợp lệ' })
   const result = db

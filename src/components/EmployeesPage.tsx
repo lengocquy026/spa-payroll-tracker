@@ -9,8 +9,8 @@ export function EmployeesPage({
   onDelete,
 }: {
   employees: Employee[]
-  onCreate: (name: string) => Promise<void>
-  onUpdate: (id: number, name: string) => Promise<void>
+  onCreate: (name: string, adminPassword: string) => Promise<void>
+  onUpdate: (id: number, name: string, adminPassword: string) => Promise<void>
   onDelete: (id: number, password: string) => Promise<void>
 }) {
   const [editingId, setEditingId] = useState<number | null>(null)
@@ -19,6 +19,7 @@ export function EmployeesPage({
   const [password, setPassword] = useState('')
   const [busy, setBusy] = useState(false)
   const [newName, setNewName] = useState('')
+  const [adminPassword, setAdminPassword] = useState('')
   const startEdit = (employee: Employee) => {
     setEditingId(employee.id)
     setEditingName(employee.name)
@@ -27,7 +28,7 @@ export function EmployeesPage({
     if (!editingId || !editingName.trim()) return
     setBusy(true)
     try {
-      await onUpdate(editingId, editingName.trim())
+      await onUpdate(editingId, editingName.trim(), adminPassword)
       setEditingId(null)
     } finally {
       setBusy(false)
@@ -48,7 +49,7 @@ export function EmployeesPage({
     if (!newName.trim()) return
     setBusy(true)
     try {
-      await onCreate(newName.trim())
+      await onCreate(newName.trim(), adminPassword)
       setNewName('')
     } finally {
       setBusy(false)
@@ -61,7 +62,11 @@ export function EmployeesPage({
           <p className='eyebrow'>NHÂN SỰ</p>
           <h2>Quản lý nhân viên</h2>
         </div>
-        <div className='employee-create'><input value={newName} onChange={(event) => setNewName(event.target.value)} placeholder='Tên nhân viên mới' onKeyDown={(event) => event.key === 'Enter' && void createEmployee()} /><button className='primary-button' disabled={busy || !newName.trim()} onClick={() => void createEmployee()}><Plus size={16} />Thêm nhân viên</button></div>
+        <div className='employee-create'>
+          <input value={newName} onChange={(event) => setNewName(event.target.value)} placeholder='Tên nhân viên mới' onKeyDown={(event) => event.key === 'Enter' && void createEmployee()} />
+          <input type='password' value={adminPassword} onChange={(event) => setAdminPassword(event.target.value)} placeholder='Mật khẩu admin' />
+          <button className='primary-button' disabled={busy || !newName.trim() || !adminPassword} onClick={() => void createEmployee()}><Plus size={16} />Thêm nhân viên</button>
+        </div>
       </div>
       <div className='table-card employee-table'>
         <div className='table-head'>
