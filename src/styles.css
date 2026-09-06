@@ -51,7 +51,8 @@ button {
 .table-head,
 .stat-card small {
   font:
-    10px 'SFMono-Regular', Consolas,
+    10px 'SFMono-Regular',
+    Consolas,
     monospace;
   letter-spacing: 0.09em;
 }
@@ -402,7 +403,10 @@ p {
   color: #59816d;
   border-radius: 20px;
   padding: 7px 11px;
-  font: 11px 'SFMono-Regular', Consolas, monospace;
+  font:
+    11px 'SFMono-Regular',
+    Consolas,
+    monospace;
 }
 .service-list {
   border-top: 1px solid #edf1ed;
@@ -585,7 +589,9 @@ p {
   box-shadow: 0 20px 50px #173f3c33;
 }
 .confirm-modal h3 {
-  font: 700 21px Georgia, serif;
+  font:
+    700 21px Georgia,
+    serif;
   margin-bottom: 10px;
 }
 .modal-copy {
@@ -723,4 +729,23 @@ p {
     flex-direction: column;
     gap: 8px;
   }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+strong,
+small {
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.table-card {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
