@@ -32,8 +32,15 @@ db.exec(`
   CREATE TABLE IF NOT EXISTS work_record_items (id INTEGER PRIMARY KEY AUTOINCREMENT, work_record_id INTEGER NOT NULL, service_id INTEGER NOT NULL, quantity INTEGER NOT NULL DEFAULT 0, unit_price INTEGER NOT NULL DEFAULT 0, UNIQUE(work_record_id, service_id), FOREIGN KEY(work_record_id) REFERENCES work_records(id) ON DELETE CASCADE, FOREIGN KEY(service_id) REFERENCES services(id));
 `)
 app.use((req, res, next) => {
-  const allowedOrigin = process.env.FRONTEND_URL ?? '*'
-  res.setHeader('Access-Control-Allow-Origin', allowedOrigin)
+  const allowedOrigins = (process.env.FRONTEND_URL ?? 'https://lengocquy026.github.io,http://localhost:5173')
+    .split(',')
+    .map((origin) => origin.trim().replace(/\/+$/, ''))
+    .filter(Boolean)
+  const requestOrigin = String(req.headers.origin ?? '').replace(/\/+$/, '')
+  if (requestOrigin && allowedOrigins.includes(requestOrigin)) {
+    res.setHeader('Access-Control-Allow-Origin', requestOrigin)
+    res.setHeader('Vary', 'Origin')
+  }
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
   res.setHeader('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS')
   if (req.method === 'OPTIONS') return res.sendStatus(204)
