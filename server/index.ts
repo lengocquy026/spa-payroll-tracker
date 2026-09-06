@@ -11,8 +11,10 @@ const adminPassword = process.env.ADMIN_PASSWORD ?? 'admin123'
 const localDataDir = path.resolve('data')
 const requestedDataDir = process.env.DATA_DIR?.trim()
 let dataDir = requestedDataDir ? path.resolve(requestedDataDir) : localDataDir
+let persistentStorage = false
 try {
   fs.mkdirSync(dataDir, { recursive: true })
+  persistentStorage = Boolean(requestedDataDir)
 } catch (error) {
   console.warn(
     `DATA_DIR is not writable (${dataDir}); falling back to ${localDataDir}.`,
@@ -110,7 +112,7 @@ db.exec(
 )
 app.use(express.json())
 app.get('/', (_req, res) => res.json({ name: 'Babylon Spa API', status: 'ok' }))
-app.get('/api/health', (_req, res) => res.json({ status: 'ok' }))
+app.get('/api/health', (_req, res) => res.json({ status: 'ok', persistentStorage, dataDir }))
 
 app.get('/api/employees', (_req, res) =>
   res.json(
