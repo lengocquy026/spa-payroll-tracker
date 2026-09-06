@@ -513,6 +513,19 @@ p {
 .employee-page {
   max-width: 980px;
 }
+.employee-create {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.employee-create input {
+  width: 190px;
+  border: 1px solid #dfe8df;
+  border-radius: 5px;
+  padding: 10px 11px;
+  color: #28564f;
+  background: white;
+}
 .employee-table .table-head,
 .employee-table .table-row {
   grid-template-columns: 2fr 1.2fr 1.5fr;
@@ -679,6 +692,13 @@ p {
     align-items: flex-start;
     gap: 15px;
     flex-wrap: wrap;
+  }
+  .employee-create {
+    width: 100%;
+  }
+  .employee-create input {
+    flex: 1;
+    width: auto;
   }
   .page-heading h2 {
     font-size: 21px;

@@ -107,6 +107,16 @@ function App() {
       throw new Error('update employee failed')
     }
   }
+  const createEmployee = async (name: string) => {
+    try {
+      await spaApi.createEmployee(name)
+      await reloadEmployees()
+      flash('Đã tạo nhân viên mới')
+    } catch {
+      flash('Không thể tạo nhân viên')
+      throw new Error('create employee failed')
+    }
+  }
   const deleteEmployee = async (id: number, password: string) => {
     try {
       await spaApi.deleteEmployee(id, password)
@@ -188,6 +198,7 @@ function App() {
         ) : active === 'Nhân viên' ? (
           <EmployeesPage
             employees={employees}
+            onCreate={createEmployee}
             onUpdate={updateEmployee}
             onDelete={deleteEmployee}
           />

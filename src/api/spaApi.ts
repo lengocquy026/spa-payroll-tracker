@@ -13,6 +13,10 @@ async function request<T>(url: string, options?: RequestInit): Promise<T> {
 
 export const spaApi = {
   getEmployees: () => request<Employee[]>('/api/employees'),
+  createEmployee: (name: string) => request<Employee>('/api/employees', {
+    method: 'POST',
+    body: JSON.stringify({ name }),
+  }),
   updateEmployee: (employeeId: number, name: string) => request<{ ok: boolean }>(`/api/employees/${employeeId}`, {
     method: 'PUT',
     body: JSON.stringify({ name }),

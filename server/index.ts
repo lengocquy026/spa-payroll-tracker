@@ -99,6 +99,16 @@ app.get('/api/employees', (_req, res) =>
       .all(),
   ),
 )
+app.post('/api/employees', (req, res) => {
+  const name = String(req.body?.name ?? '').trim()
+  if (!name) return res.status(400).json({ error: 'Tên nhân viên không hợp lệ' })
+  const create = db.transaction(() => {
+    const employee = db.prepare('INSERT INTO employees (name, active) VALUES (?, 1) RETURNING id, name').get(name) as { id: number; name: string }
+    db.prepare('INSERT INTO employee_service_prices (employee_id, service_id, price) SELECT ?, id, price FROM services WHERE active = 1').run(employee.id)
+    return employee
+  })
+  res.status(201).json(create())
+})
 app.put('/api/employees/:id', (req, res) => {
   const employeeId = Number(req.params.id)
   const name = String(req.body?.name ?? '').trim()

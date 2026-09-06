@@ -1,13 +1,15 @@
-import { Pencil, Save, Trash2, X } from 'lucide-react'
+import { Pencil, Plus, Save, Trash2, X } from 'lucide-react'
 import { useState } from 'react'
 import type { Employee } from '../types'
 
 export function EmployeesPage({
   employees,
+  onCreate,
   onUpdate,
   onDelete,
 }: {
   employees: Employee[]
+  onCreate: (name: string) => Promise<void>
   onUpdate: (id: number, name: string) => Promise<void>
   onDelete: (id: number, password: string) => Promise<void>
 }) {
@@ -16,6 +18,7 @@ export function EmployeesPage({
   const [deleteId, setDeleteId] = useState<number | null>(null)
   const [password, setPassword] = useState('')
   const [busy, setBusy] = useState(false)
+  const [newName, setNewName] = useState('')
   const startEdit = (employee: Employee) => {
     setEditingId(employee.id)
     setEditingName(employee.name)
@@ -41,6 +44,16 @@ export function EmployeesPage({
       setBusy(false)
     }
   }
+  const createEmployee = async () => {
+    if (!newName.trim()) return
+    setBusy(true)
+    try {
+      await onCreate(newName.trim())
+      setNewName('')
+    } finally {
+      setBusy(false)
+    }
+  }
   return (
     <section className='attendance-page employee-page'>
       <div className='page-heading'>
@@ -48,9 +61,7 @@ export function EmployeesPage({
           <p className='eyebrow'>NHÂN SỰ</p>
           <h2>Quản lý nhân viên</h2>
         </div>
-        <span className='date-pill'>
-          {employees.length} nhân viên đang hoạt động
-        </span>
+        <div className='employee-create'><input value={newName} onChange={(event) => setNewName(event.target.value)} placeholder='Tên nhân viên mới' onKeyDown={(event) => event.key === 'Enter' && void createEmployee()} /><button className='primary-button' disabled={busy || !newName.trim()} onClick={() => void createEmployee()}><Plus size={16} />Thêm nhân viên</button></div>
       </div>
       <div className='table-card employee-table'>
         <div className='table-head'>
