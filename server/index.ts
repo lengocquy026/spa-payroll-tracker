@@ -8,7 +8,7 @@ type WorkItem = { serviceId: number; quantity: number }
 const app = express()
 const port = Number(process.env.PORT ?? 3001)
 const adminPassword = process.env.ADMIN_PASSWORD ?? 'admin123'
-const dataDir = path.resolve('data')
+const dataDir = path.resolve(process.env.DATA_DIR ?? 'data')
 fs.mkdirSync(dataDir, { recursive: true })
 const db = new Database(path.join(dataDir, 'spa.sqlite'))
 db.pragma('journal_mode = WAL')
@@ -20,6 +20,14 @@ db.exec(`
   CREATE TABLE IF NOT EXISTS work_records (id INTEGER PRIMARY KEY AUTOINCREMENT, employee_id INTEGER NOT NULL, work_date TEXT NOT NULL, created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, UNIQUE(employee_id, work_date), FOREIGN KEY(employee_id) REFERENCES employees(id));
   CREATE TABLE IF NOT EXISTS work_record_items (id INTEGER PRIMARY KEY AUTOINCREMENT, work_record_id INTEGER NOT NULL, service_id INTEGER NOT NULL, quantity INTEGER NOT NULL DEFAULT 0, unit_price INTEGER NOT NULL DEFAULT 0, UNIQUE(work_record_id, service_id), FOREIGN KEY(work_record_id) REFERENCES work_records(id) ON DELETE CASCADE, FOREIGN KEY(service_id) REFERENCES services(id));
 `)
+app.use((req, res, next) => {
+  const allowedOrigin = process.env.FRONTEND_URL ?? '*'
+  res.setHeader('Access-Control-Allow-Origin', allowedOrigin)
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+  res.setHeader('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS')
+  if (req.method === 'OPTIONS') return res.sendStatus(204)
+  next()
+})
 const columns = db
   .prepare('PRAGMA table_info(work_record_items)')
   .all() as Array<{ name: string }>

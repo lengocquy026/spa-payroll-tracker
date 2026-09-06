@@ -15,6 +15,12 @@ Mật khẩu admin mặc định ở môi trường local là `admin123`. Khi de
 ADMIN_PASSWORD='mat-khau-cua-ban' npm run server
 ```
 
+Khi backend chạy khác domain frontend, đặt thêm CORS và thư mục SQLite persistent:
+
+```bash
+FRONTEND_URL='https://TEN_GITHUB.github.io' DATA_DIR='/var/data' npm run server
+```
+
 Mở terminal thứ hai:
 
 ```bash
