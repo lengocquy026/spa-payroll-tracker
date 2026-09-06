@@ -1,7 +1,13 @@
 :root {
-  font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text',
+    'SF Pro Icons', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   color: #173f3c;
   background: #f6f7f2;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 * {
   box-sizing: border-box;
@@ -34,8 +40,8 @@ button {
 }
 .brand {
   font:
-    24px Georgia,
-    serif;
+    24px -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI',
+    Roboto, sans-serif;
   color: white;
   padding: 0 14px 50px;
 }
@@ -137,8 +143,8 @@ p {
 }
 .topbar h1 {
   font:
-    700 27px Georgia,
-    serif;
+    700 27px -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI',
+    Roboto, sans-serif;
   margin-top: 7px;
 }
 .eyebrow {
@@ -177,8 +183,8 @@ p {
 }
 .hero h2 {
   font:
-    700 27px Georgia,
-    serif;
+    700 27px -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI',
+    Roboto, sans-serif;
 }
 .hero h2 span {
   color: #b08e43;
@@ -241,8 +247,8 @@ p {
 .stat-card strong {
   display: block;
   font:
-    700 27px Georgia,
-    serif;
+    700 27px -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI',
+    Roboto, sans-serif;
   color: #173f3c;
   margin: 17px 0 8px;
 }
@@ -264,8 +270,8 @@ p {
 .section-heading h3,
 .page-heading h2 {
   font:
-    700 22px Georgia,
-    serif;
+    700 22px -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI',
+    Roboto, sans-serif;
 }
 .table-card,
 .service-card {
@@ -395,8 +401,8 @@ p {
 }
 .card-title h3 {
   font:
-    700 21px Georgia,
-    serif;
+    700 21px -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI',
+    Roboto, sans-serif;
 }
 .date-pill {
   background: #edf5ed;
@@ -590,8 +596,8 @@ p {
 }
 .confirm-modal h3 {
   font:
-    700 21px Georgia,
-    serif;
+    700 21px -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI',
+    Roboto, sans-serif;
   margin-bottom: 10px;
 }
 .modal-copy {
