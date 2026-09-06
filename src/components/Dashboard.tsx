@@ -49,6 +49,7 @@ export function Dashboard({
             nhàng.
           </p>
         </div>
+        <div className='hero-decoration'>✺</div>
       </div>
       <div className='report-filters'>
         <label>
