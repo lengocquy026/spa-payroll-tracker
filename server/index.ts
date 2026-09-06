@@ -16,12 +16,13 @@ try {
   fs.mkdirSync(dataDir, { recursive: true })
   persistentStorage = Boolean(requestedDataDir)
 } catch (error) {
-  console.warn(
-    `DATA_DIR is not writable (${dataDir}); falling back to ${localDataDir}.`,
-    error,
-  )
-  dataDir = localDataDir
-  fs.mkdirSync(dataDir, { recursive: true })
+  if (requestedDataDir) {
+    throw new Error(
+      `DATA_DIR is not writable (${dataDir}). Mount the Render Disk or fix DATA_DIR before starting the server.`,
+      { cause: error },
+    )
+  }
+  fs.mkdirSync(localDataDir, { recursive: true })
 }
 const db = new Database(path.join(dataDir, 'spa.sqlite'))
 db.pragma('journal_mode = WAL')

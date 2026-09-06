@@ -21,7 +21,11 @@ Khi backend chạy khác domain frontend, đặt thêm CORS và thư mục SQLit
 FRONTEND_URL='https://kinchan026.github.io' DATA_DIR='/data' npm run server
 ```
 
-Trên Render, tạo `Persistent Disk` và mount vào đúng `/data`, sau đó đặt Environment Variable `DATA_DIR=/data`. Không dùng `/var/data` nếu chưa mount disk ở đường dẫn đó. Nếu không có Persistent Disk, app vẫn chạy bằng thư mục local nhưng dữ liệu SQLite có thể mất khi service redeploy/restart.
+Trên Render, tạo `Persistent Disk` và mount vào đúng `/data`, sau đó đặt Environment Variable `DATA_DIR=/data`. Không dùng `/var/data` nếu chưa mount disk ở đường dẫn đó. Nếu `DATA_DIR` đã được khai báo nhưng disk không mount hoặc không ghi được, backend sẽ dừng ngay thay vì âm thầm lưu vào thư mục local và làm bạn tưởng dữ liệu vẫn an toàn.
+
+File SQLite được lưu ngoài source code khi chạy trên Render (`/data/spa.sqlite`). Các file `data/`, `*.sqlite`, `*.db` và file WAL đều nằm trong `.gitignore`, nên `git push` hoặc build frontend không đưa database lên GitHub và không ghi đè Render Disk.
+
+Để thao tác thủ công, dùng Render Shell hoặc công cụ backup của Render trên Persistent Disk. Không sửa trực tiếp file `spa.sqlite` khi server đang chạy; hãy dừng service hoặc tạo bản sao trước, đồng thời giữ cả `spa.sqlite-wal` và `spa.sqlite-shm` nếu chúng tồn tại.
 
 Mở terminal thứ hai:
 
