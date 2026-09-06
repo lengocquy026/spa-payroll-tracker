@@ -83,7 +83,7 @@ function App() {
     try {
       await spaApi.saveWorkRecord(selectedEmployeeId, selectedDate, counts)
       await reloadSummary()
-      flash(`Đã lưu bảng công của ${selectedName} vào SQLite`)
+      flash(`Đã lưu bảng công của ${selectedName}`)
     } catch {
       flash('Không thể lưu bảng công')
     }
@@ -194,11 +194,11 @@ function App() {
           </div>
         </header>
         {loading ? (
-          <div className='empty-state'>Đang tải dữ liệu từ SQLite...</div>
+          <div className='empty-state'>Đang tải dữ liệu...</div>
         ) : error ? (
           <div className='empty-state error-state'>{error}</div>
         ) : !summary || !selectedEmployeeId ? (
-          <div className='empty-state'>Chưa có dữ liệu từ SQLite.</div>
+          <div className='empty-state'>Chưa có dữ liệu.</div>
         ) : active === 'Nhân viên' ? (
           <EmployeesPage
             employees={employees}

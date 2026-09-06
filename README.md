@@ -41,7 +41,7 @@ Kiểm tra backend sau khi deploy bằng `https://TEN_BACKEND.onrender.com/api/h
 
 ## Chức năng
 
-- Lưu bảng công và chi tiết dịch vụ vào SQLite.
+- Lưu bảng công và chi tiết dịch vụ.
 - Tổng hợp lượt dịch vụ và tiền theo tháng, theo nhân viên.
 - Xuất Excel tại nút `Xuất Excel`, gồm bộ lọc, định dạng tiền và cố định dòng tiêu đề.
 
