@@ -34,7 +34,10 @@ db.exec(`
   CREATE TABLE IF NOT EXISTS work_record_items (id INTEGER PRIMARY KEY AUTOINCREMENT, work_record_id INTEGER NOT NULL, service_id INTEGER NOT NULL, quantity INTEGER NOT NULL DEFAULT 0, unit_price INTEGER NOT NULL DEFAULT 0, UNIQUE(work_record_id, service_id), FOREIGN KEY(work_record_id) REFERENCES work_records(id) ON DELETE CASCADE, FOREIGN KEY(service_id) REFERENCES services(id));
 `)
 app.use((req, res, next) => {
-  const allowedOrigins = (process.env.FRONTEND_URL ?? 'https://lengocquy026.github.io,http://localhost:5173')
+  const allowedOrigins = (
+    process.env.FRONTEND_URL ??
+    'https://kinchan026.github.io,http://localhost:5173'
+  )
     .split(',')
     .map((origin) => origin.trim().replace(/\/+$/, ''))
     .filter(Boolean)
@@ -44,7 +47,10 @@ app.use((req, res, next) => {
     res.setHeader('Vary', 'Origin')
   }
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
-  res.setHeader('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS')
+  res.setHeader(
+    'Access-Control-Allow-Methods',
+    'GET, PUT, POST, DELETE, OPTIONS',
+  )
   if (req.method === 'OPTIONS') return res.sendStatus(204)
   next()
 })
@@ -85,7 +91,9 @@ const serviceCatalog: Array<[string, number, string]> = [
 const syncServices = db.transaction(() => {
   // Hide services removed from the catalog without deleting historical records.
   db.prepare('UPDATE services SET active = 0').run()
-  const find = db.prepare('SELECT id, price FROM services WHERE name = ? LIMIT 1')
+  const find = db.prepare(
+    'SELECT id, price FROM services WHERE name = ? LIMIT 1',
+  )
   const insert = db.prepare(
     'INSERT INTO services (name, price, category) VALUES (?, ?, ?)',
   )
@@ -112,7 +120,9 @@ db.exec(
 )
 app.use(express.json())
 app.get('/', (_req, res) => res.json({ name: 'Babylon Spa API', status: 'ok' }))
-app.get('/api/health', (_req, res) => res.json({ status: 'ok', persistentStorage, dataDir }))
+app.get('/api/health', (_req, res) =>
+  res.json({ status: 'ok', persistentStorage, dataDir }),
+)
 
 app.get('/api/employees', (_req, res) =>
   res.json(
@@ -123,10 +133,17 @@ app.get('/api/employees', (_req, res) =>
 )
 app.post('/api/employees', (req, res) => {
   const name = String(req.body?.name ?? '').trim()
-  if (!name) return res.status(400).json({ error: 'Tên nhân viên không hợp lệ' })
+  if (!name)
+    return res.status(400).json({ error: 'Tên nhân viên không hợp lệ' })
   const create = db.transaction(() => {
-    const employee = db.prepare('INSERT INTO employees (name, active) VALUES (?, 1) RETURNING id, name').get(name) as { id: number; name: string }
-    db.prepare('INSERT INTO employee_service_prices (employee_id, service_id, price) SELECT ?, id, price FROM services WHERE active = 1').run(employee.id)
+    const employee = db
+      .prepare(
+        'INSERT INTO employees (name, active) VALUES (?, 1) RETURNING id, name',
+      )
+      .get(name) as { id: number; name: string }
+    db.prepare(
+      'INSERT INTO employee_service_prices (employee_id, service_id, price) SELECT ?, id, price FROM services WHERE active = 1',
+    ).run(employee.id)
     return employee
   })
   res.status(201).json(create())
@@ -134,17 +151,25 @@ app.post('/api/employees', (req, res) => {
 app.put('/api/employees/:id', (req, res) => {
   const employeeId = Number(req.params.id)
   const name = String(req.body?.name ?? '').trim()
-  if (!employeeId || !name) return res.status(400).json({ error: 'Tên nhân viên không hợp lệ' })
-  const result = db.prepare('UPDATE employees SET name = ? WHERE id = ? AND active = 1').run(name, employeeId)
-  if (!result.changes) return res.status(404).json({ error: 'Không tìm thấy nhân viên' })
+  if (!employeeId || !name)
+    return res.status(400).json({ error: 'Tên nhân viên không hợp lệ' })
+  const result = db
+    .prepare('UPDATE employees SET name = ? WHERE id = ? AND active = 1')
+    .run(name, employeeId)
+  if (!result.changes)
+    return res.status(404).json({ error: 'Không tìm thấy nhân viên' })
   res.json({ ok: true })
 })
 app.delete('/api/employees/:id', (req, res) => {
   const employeeId = Number(req.params.id)
   const password = String(req.body?.adminPassword ?? '')
-  if (!employeeId || password !== adminPassword) return res.status(403).json({ error: 'Mật khẩu admin không đúng' })
-  const result = db.prepare('UPDATE employees SET active = 0 WHERE id = ? AND active = 1').run(employeeId)
-  if (!result.changes) return res.status(404).json({ error: 'Không tìm thấy nhân viên' })
+  if (!employeeId || password !== adminPassword)
+    return res.status(403).json({ error: 'Mật khẩu admin không đúng' })
+  const result = db
+    .prepare('UPDATE employees SET active = 0 WHERE id = ? AND active = 1')
+    .run(employeeId)
+  if (!result.changes)
+    return res.status(404).json({ error: 'Không tìm thấy nhân viên' })
   res.json({ ok: true })
 })
 app.get('/api/services', (req, res) => {
@@ -268,7 +293,9 @@ app.post('/api/work-records', (req, res) => {
         'INSERT INTO work_records (employee_id, work_date) VALUES (?, ?) ON CONFLICT(employee_id, work_date) DO UPDATE SET created_at = CURRENT_TIMESTAMP RETURNING id',
       )
       .get(employeeId, workDate) as { id: number }
-    db.prepare('DELETE FROM work_record_items WHERE work_record_id = ? AND service_id NOT IN (SELECT id FROM services WHERE active = 1)').run(record.id)
+    db.prepare(
+      'DELETE FROM work_record_items WHERE work_record_id = ? AND service_id NOT IN (SELECT id FROM services WHERE active = 1)',
+    ).run(record.id)
     const item = db.prepare(
       `INSERT INTO work_record_items (work_record_id, service_id, quantity, unit_price) SELECT ?, ?, ?, esp.price FROM employee_service_prices esp JOIN services s ON s.id = esp.service_id AND s.active = 1 WHERE esp.employee_id = ? AND esp.service_id = ? ON CONFLICT(work_record_id, service_id) DO UPDATE SET quantity = excluded.quantity, unit_price = excluded.unit_price`,
     )
