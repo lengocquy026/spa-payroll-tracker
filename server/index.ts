@@ -8,8 +8,19 @@ type WorkItem = { serviceId: number; quantity: number }
 const app = express()
 const port = Number(process.env.PORT ?? 3001)
 const adminPassword = process.env.ADMIN_PASSWORD ?? 'admin123'
-const dataDir = path.resolve(process.env.DATA_DIR ?? 'data')
-fs.mkdirSync(dataDir, { recursive: true })
+const localDataDir = path.resolve('data')
+const requestedDataDir = process.env.DATA_DIR?.trim()
+let dataDir = requestedDataDir ? path.resolve(requestedDataDir) : localDataDir
+try {
+  fs.mkdirSync(dataDir, { recursive: true })
+} catch (error) {
+  console.warn(
+    `DATA_DIR is not writable (${dataDir}); falling back to ${localDataDir}.`,
+    error,
+  )
+  dataDir = localDataDir
+  fs.mkdirSync(dataDir, { recursive: true })
+}
 const db = new Database(path.join(dataDir, 'spa.sqlite'))
 db.pragma('journal_mode = WAL')
 db.pragma('foreign_keys = ON')
